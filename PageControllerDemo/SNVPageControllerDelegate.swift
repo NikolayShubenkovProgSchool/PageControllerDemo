@@ -14,10 +14,9 @@ enum SNVError: ErrorType {
 
 @objc class SNVPageControllerDelegate: NSObject, UIPageViewControllerDataSource {
     
-    var viewIdsToViewControllers:[String:UIViewController] = [String:UIViewController]()
-    var viewControllerIdentifiers : [String] = []
-    var storyBoard : UIStoryboard
-    var lastPresentedControler : UIViewController?
+    private var viewIdsToViewControllers:[String:UIViewController] = [String:UIViewController]()
+    private var viewControllerIdentifiers : [String] = []
+    private var storyBoard : UIStoryboard
     
     init(pageController:UIPageViewController,viewControllersIds:[String],storyboard:UIStoryboard){
         assert(viewControllersIds.count > 0)
@@ -31,11 +30,10 @@ enum SNVError: ErrorType {
             self.viewIdsToViewControllers[identifier] = self.storyBoard.instantiateViewControllerWithIdentifier(identifier)
             controllers.append(self.viewIdsToViewControllers[identifier]!)
         }
-        self.lastPresentedControler = controllers[0]
-        pageController.setViewControllers([self.lastPresentedControler!], direction: UIPageViewControllerNavigationDirection.Forward, animated: false, completion: nil)
+        pageController.setViewControllers([controllers[0]], direction: UIPageViewControllerNavigationDirection.Forward, animated: false, completion: nil)
     }
     
-    //MARK: PageController DataSource
+    //MARK:- PageController DataSource -
     
     func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
         
@@ -72,7 +70,7 @@ enum SNVError: ErrorType {
         }
     }
     
-    func indexOfController(controller:UIViewController)throws->Int  {
+    private func indexOfController(controller:UIViewController)throws->Int  {
         for storyboardID in self.viewControllerIdentifiers {
             if self.viewIdsToViewControllers[storyboardID] == controller {
                 return self.viewControllerIdentifiers.indexOf(storyboardID)!
