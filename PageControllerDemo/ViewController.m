@@ -26,12 +26,15 @@
     self.pageControllerDelegate = [[SNVPageControllerDelegate alloc]initWithPageController:pageController
                                                                         viewControllersIds:@[@"first",@"second",@"third"]
                                                                                 storyboard:self.storyboard];
-    [self presentViewController:pageController animated:YES completion:nil];
+
+    UINavigationController *nvc = [[UINavigationController alloc]initWithRootViewController:pageController];
+    pageController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                                                   target:pageController
+                                                                                                   action:@selector(dismissModalViewControllerAnimated:)];
+    
+    [self presentViewController:nvc animated:YES completion:nil];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
+
 
 @end
